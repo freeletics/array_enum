@@ -1,4 +1,6 @@
 require "array_enum/version"
+require "array_enum/subset_validator"
+require "array_enum/railtie" if defined?(Rails)
 
 module ArrayEnum
   def array_enum(definitions)

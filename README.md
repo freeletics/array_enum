@@ -8,6 +8,8 @@ Extension for `ActiveRecord` that adds support for `PostgreSQL` array columns, m
 
 ## Usage
 
+# ActiveRecord extension
+
 Database will store integers that after reading will map to string values.
 Additionally scope is generated with `with_` prefix that will query database for any matching passed value.
 
@@ -27,6 +29,22 @@ end
 user = User.create!(favourite_colors: ["red", "green"])
 user.favourite_colors # => ["red", "green"]
 User.with_favourite_colors("red") # => [user]
+```
+
+# Subset Validator
+
+Additionally `subset` validator is provided that can help to ensure correct values are passed during validation.
+
+```ruby
+class CreateUser
+  include ActiveModel::Model
+
+  attr_accessor :favourite_colors
+
+  validates :favourite_colors, subset: ["green", "blue"]
+end
+
+CreateUser.new(favourite_colors: ["black"]).valid? # => false
 ```
 
 ## Development

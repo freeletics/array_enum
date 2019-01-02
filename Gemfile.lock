@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     array_enum (0.1.0)
+      activemodel
 
 GEM
   remote: https://rubygems.org/

@@ -25,3 +25,6 @@ class User < ActiveRecord::Base
 
   array_enum favourite_colors: {"red" => 1, "blue" => 2, "green" => 3}
 end
+
+# Mimic constant assigment from railtie
+SubsetValidator = ArrayEnum::SubsetValidator
