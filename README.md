@@ -1,28 +1,33 @@
 # ArrayEnum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/array_enum`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Extension for `ActiveRecord` that adds support for `PostgreSQL` array columns, mapping string values to integers.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem "array_enum"
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install array_enum
+`gem install array_enum` or use `Gemfile` with bundler
 
 ## Usage
 
-TODO: Write usage instructions here
+Database will store integers that after reading will map to string values.
+Additionally scope is generated with `with_` prefix that will query database for any matching passed value.
+
+```ruby
+ActiveRecord::Schema.define do
+  create_table :users, force: true do |t|
+    t.integer :favourite_colors, array: true, null: false, default: []
+  end
+end
+
+class User < ActiveRecord::Base
+  extend ArrayEnum
+
+  array_enum favourite_colors: {"red" => 1, "blue" => 2}
+end
+
+user = User.create!(favourite_colors: ["red", "green"])
+user.favourite_colors # => ["red", "green"]
+User.with_favourite_colors("red") # => [user]
+```
 
 ## Development
 
@@ -32,7 +37,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/array_enum.
+Bug reports and pull requests are welcome on GitHub at https://github.com/freeletics/array_enum.
 
 ## License
 

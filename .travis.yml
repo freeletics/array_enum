@@ -1,5 +1,16 @@
----
+dist: xenial
 language: ruby
 cache: bundler
 rvm:
   - 2.6.0
+
+addons:
+  postgresql: "10"
+
+before_script:
+  - psql -c 'create database "array_enum_test";' -U postgres
+
+script: "bundle exec rake"
+
+notifications:
+  disabled: true
