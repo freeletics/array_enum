@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    array_enum (0.1.0)
+    array_enum (1.0.0)
       activemodel
 
 GEM
