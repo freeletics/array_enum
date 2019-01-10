@@ -16,9 +16,10 @@ class ArrayEnumTest < Minitest::Test
   end
 
   def test_raising_error_on_unknown_value
-    assert_raises(KeyError) do
+    error = assert_raises(ArgumentError) do
       User.new(favourite_colors: ["black"])
     end
+    assert_match(/black is not a valid value for favourite_colors/, error.message)
   end
 
   def test_storing_values_as_integers
@@ -55,8 +56,9 @@ class ArrayEnumTest < Minitest::Test
 
   def test_quering_db_by_non_existing_value_raises_error
     User.create!(favourite_colors: ["red", "blue"])
-    assert_raises(KeyError) do
+    error = assert_raises(ArgumentError) do
       User.with_favourite_colors("black")
     end
+    assert_match(/black is not a valid value for favourite_colors/, error.message)
   end
 end
