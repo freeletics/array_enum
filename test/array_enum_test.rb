@@ -61,4 +61,15 @@ class ArrayEnumTest < Minitest::Test
     end
     assert_match(/black is not a valid value for favourite_colors/, error.message)
   end
+
+  def test_lists_values
+    assert_equal User.favourite_colors, {"red"=>1, "blue"=>2, "green"=>3}
+  end
+
+  def test_values_can_be_accessed_indifferently
+    assert_equal User.favourite_colors[:red], 1
+    assert_equal User.favourite_colors[:blue], 2
+    assert_equal User.favourite_colors[:green], 3
+    assert_equal User.favourite_colors["red"], 1
+  end
 end
