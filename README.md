@@ -28,6 +28,7 @@ end
 
 user = User.create!(favourite_colors: ["red", "green"])
 user.favourite_colors # => ["red", "green"]
+User.favourite_colors # => {"red" => 1, "blue" => 2}
 User.with_favourite_colors("red") # => [user]
 ```
 
