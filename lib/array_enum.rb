@@ -1,6 +1,6 @@
 require "array_enum/version"
 require "array_enum/subset_validator"
-require "array_enum/railtie" if defined?(Rails)
+require "array_enum/railtie" if defined?(Rails::Railtie)
 require "active_support/hash_with_indifferent_access"
 require "active_support/core_ext/string/inflections"
 
