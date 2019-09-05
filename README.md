@@ -43,6 +43,8 @@ class CreateUser
   attr_accessor :favourite_colors
 
   validates :favourite_colors, subset: ["green", "blue"]
+  # or:
+  # validates :favourite_colors, subset: { in: ->(record) { Color.pluck(:name) } }
 end
 
 CreateUser.new(favourite_colors: ["black"]).valid? # => false
