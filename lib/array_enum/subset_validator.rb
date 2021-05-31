@@ -8,7 +8,7 @@ class ArrayEnum::SubsetValidator < ActiveModel::EachValidator
     diff = wrapped_value.reject { |element| subset.include?(element) }
 
     unless diff.empty?
-      record.errors.add(attribute, :inclusion, options.except(:in, :within).merge!(value: diff))
+      record.errors.add(attribute, :inclusion, **options.except(:in, :within).merge!(value: diff))
     end
   end
 
