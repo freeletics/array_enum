@@ -72,4 +72,10 @@ class ArrayEnumTest < Minitest::Test
     assert_equal User.favourite_colors[:green], 3
     assert_equal User.favourite_colors["red"], 1
   end
+
+  def test_blank_values_from_parameter_maps_should_be_filtered
+    params = ActionController::Parameters.new(favourite_colors: ["", "red", "blue"] ).permit( favourite_colors:[] )
+    user = User.create!(params)
+    assert_equal ["red", "blue"], user.favourite_colors
+  end
 end

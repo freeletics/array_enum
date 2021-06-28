@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "active_record"
+require "action_controller"
 require "array_enum"
 require "minitest/autorun"
 
