@@ -54,6 +54,16 @@ class ArrayEnumTest < Minitest::Test
     assert_equal [], User.with_favourite_colors(["red", "green"])
   end
 
+  def test_quering_db_only_with_single_matching_value
+    user = User.create!(favourite_colors: ["red"])
+    assert_equal [user], User.only_with_favourite_colors(["red"])
+  end
+
+  def test_quering_db_only_with_single_matching_value_from_many_values_does_not_return_record
+    User.create!(favourite_colors: ["red", "blue"])
+    assert_equal [], User.only_with_favourite_colors(["red"])
+  end
+
   def test_quering_db_by_non_existing_value_raises_error
     User.create!(favourite_colors: ["red", "blue"])
     error = assert_raises(ArgumentError) do

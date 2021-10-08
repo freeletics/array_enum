@@ -24,6 +24,13 @@ module ArrayEnum
         where("#{attr_name} @> ARRAY[:db_values]", db_values: db_values)
       end
 
+      define_singleton_method("only_with_#{attr_name}".to_sym) do |values|
+        db_values = Array(values).map do |value|
+          mapping_hash[value] || raise(ArgumentError, MISSING_VALUE_MESSAGE % {value: value, attr: attr_name})
+        end
+        where("#{attr_name} = ARRAY[:db_values]", db_values: db_values)
+      end
+
       define_method(attr_symbol) do
         Array(self[attr_symbol]).map { |value| mapping_hash.key(value) }
       end
