@@ -3,36 +3,54 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [2.7, '3.0', 3.1]
+
     services:
       postgres:
-        image: postgres:11
+        image: postgres
         ports:
-        - 5432:5432
+          - 5432:5432
         env:
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - name: Install libraries
       run: |
-        sudo apt-get update
         sudo apt-get install -y libpq-dev postgresql-client
 
     - name: Configure database
+      env:
+        PGPASSWORD: postgres
+        PGUSER: postgres
+        PGHOST: localhost
       run: |
-        echo "PostgreSQL"
-        psql -h localhost -c 'create database "array_enum_test";' -U postgres
+        echo "Configuring PostgresSQL"
+        psql -c 'create database "array_enum_test";'
 
-    - uses: actions/checkout@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Set up Ruby
-      uses: actions/setup-ruby@v1
+    - name : Setup Ruby
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
 
-    - name: Build and test
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
-        bundle exec rake test
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Run test
+      env:
+        PGPASSWORD: postgres
+        PGUSER: postgres
+        PGHOST: localhost
+      run: bundle exec rake test
