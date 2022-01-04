@@ -39,7 +39,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name : Setup Ruby
+    - name : Ruby Setup
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
@@ -53,4 +53,4 @@ jobs:
         PGPASSWORD: postgres
         PGUSER: postgres
         PGHOST: localhost
-      run: bundle exec rake test
+      run: bundle exec rake -s test
