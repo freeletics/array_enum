@@ -1,3 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/array_enum.svg)](https://badge.fury.io/rb/array_enum)
+[![CI](https://github.com/freeletics/array_enum/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/freeletics/array_enum/actions/workflows/ci.yml)
+
+
 # ArrayEnum
 
 Extension for `ActiveRecord` that adds support for `PostgreSQL` array columns, mapping string values to integers.
