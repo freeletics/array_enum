@@ -17,11 +17,13 @@ module ArrayEnum
         mapping_hash
       end
 
-      define_singleton_method("with_#{attr_name}".to_sym) do |values|
-        db_values = Array(values).map do |value|
-          mapping_hash[value] || raise(ArgumentError, MISSING_VALUE_MESSAGE % {value: value, attr: attr_name})
+      { "with_#{attr_name}" => '@>', "only_with_#{attr_name}" => '=' }.each do |method_name, comparison_operator|
+        define_singleton_method(method_name.to_sym) do |values|
+          db_values = Array(values).map do |value|
+            mapping_hash[value] || raise(ArgumentError, MISSING_VALUE_MESSAGE % {value: value, attr: attr_name})
+          end
+          where("#{attr_name} #{comparison_operator} ARRAY[:db_values]", db_values: db_values)
         end
-        where("#{attr_name} @> ARRAY[:db_values]", db_values: db_values)
       end
 
       define_method(attr_symbol) do
