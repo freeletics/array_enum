@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/array_enum.svg)](https://badge.fury.io/rb/array_enum)
-[![CI](https://github.com/freeletics/array_enum/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/freeletics/array_enum/actions/workflows/ci.yml)
+[![BUILD](https://github.com/freeletics/array_enum/actions/workflows/ci-on-merge.yml/badge.svg)](https://github.com/freeletics/array_enum/actions/workflows/ci-on-merge.yml)
 
 
 # ArrayEnum
