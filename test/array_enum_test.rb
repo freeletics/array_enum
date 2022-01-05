@@ -28,7 +28,7 @@ class ArrayEnumTest < Minitest::Test
     assert_equal "{1}", user.read_attribute_before_type_cast("favourite_colors")
   end
 
-  # Scope
+  # with_attr scope
   def test_quering_db_with_single_matching_value
     user = User.create!(favourite_colors: ["red"])
     assert_equal [user], User.with_favourite_colors("red")
@@ -71,6 +71,41 @@ class ArrayEnumTest < Minitest::Test
     end
     assert_match(/black is not a valid value for favourite_colors/, error.message)
   end
+
+  # with_any_of_attr scope
+  def test_with_any_of_attr_matching_value
+    user = User.create!(favourite_colors: ["red"])
+    assert_equal [user], User.with_any_of_favourite_colors("red")
+  end
+
+  def test_with_any_of_attr_matching_symbol_value
+    user = User.create!(favourite_colors: ["red"])
+    assert_equal [user], User.with_any_of_favourite_colors(:red)
+  end
+
+  def test_with_any_of_attr_one_of_matching_value
+    user = User.create!(favourite_colors: ["red", "blue"])
+    assert_equal [user], User.with_any_of_favourite_colors("red")
+  end
+
+  def test_with_any_of_attr_excluded_value_does_not_return_record
+    User.create!(favourite_colors: ["red", "blue"])
+    assert_equal [], User.with_any_of_favourite_colors("green")
+  end
+
+  def test_with_any_of_attr_many_value_when_single_match
+    user = User.create!(favourite_colors: ["red", "blue"])
+    assert_equal [user], User.with_any_of_favourite_colors(["red", "green"])
+  end
+
+  def test_with_any_of_attr_by_non_existing_value_raises_error
+    User.create!(favourite_colors: ["red", "blue"])
+    error = assert_raises(ArgumentError) do
+      User.with_any_of_favourite_colors("black")
+    end
+    assert_match(/black is not a valid value for favourite_colors/, error.message)
+  end
+
 
   def test_lists_values
     assert_equal User.favourite_colors, {"red"=>1, "blue"=>2, "green"=>3}
