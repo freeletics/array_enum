@@ -1,11 +1,11 @@
-require "array_enum/version"
-require "array_enum/subset_validator"
-require "array_enum/railtie" if defined?(Rails::Railtie)
-require "active_support/hash_with_indifferent_access"
-require "active_support/core_ext/string/inflections"
+require 'array_enum/version'
+require 'array_enum/subset_validator'
+require 'array_enum/railtie' if defined?(Rails::Railtie)
+require 'active_support/hash_with_indifferent_access'
+require 'active_support/core_ext/string/inflections'
 
 module ArrayEnum
-  MISSING_VALUE_MESSAGE = "%{value} is not a valid value for %{attr}".freeze
+  MISSING_VALUE_MESSAGE = '%<value>s is not a valid value for %<attr>s'.freeze
   private_constant :MISSING_VALUE_MESSAGE
 
   def array_enum(definitions)
@@ -24,9 +24,9 @@ module ArrayEnum
       }.each do |method_name, comparison_operator|
         define_singleton_method(method_name.to_sym) do |values|
           db_values = Array(values).map do |value|
-            mapping_hash[value] || raise(ArgumentError, MISSING_VALUE_MESSAGE % {value: value, attr: attr_name})
+            mapping_hash[value] || raise(ArgumentError, format(MISSING_VALUE_MESSAGE, value: value, attr: attr_name))
           end
-          where("#{attr_name} #{comparison_operator} ARRAY[:db_values]", db_values: db_values)
+          where("#{table_name}.#{attr_name} #{comparison_operator} ARRAY[:db_values]", db_values: db_values)
         end
       end
 
@@ -36,7 +36,7 @@ module ArrayEnum
 
       define_method("#{attr_name}=".to_sym) do |values|
         self[attr_symbol] = Array(values).map do |value|
-          mapping_hash[value] || raise(ArgumentError, MISSING_VALUE_MESSAGE % {value: value, attr: attr_name})
+          mapping_hash[value] || raise(ArgumentError, format(MISSING_VALUE_MESSAGE, value: value, attr: attr_name))
         end.uniq
       end
     end
