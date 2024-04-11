@@ -6,3 +6,5 @@
 /pkg/
 /spec/reports/
 /tmp/
+.tool-versions
+.byebug_history

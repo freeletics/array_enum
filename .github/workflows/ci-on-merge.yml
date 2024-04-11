@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [2.7, '3.0', 3.1]
+        ruby-version: [3.0, 3.1, 3.3]
 
     services:
       postgres:
@@ -40,10 +40,10 @@ jobs:
         psql -c 'create database "array_enum_test";'
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.1
 
     - name : Ruby Setup
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@v1.173.0
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
