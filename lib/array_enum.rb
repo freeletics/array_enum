@@ -26,7 +26,7 @@ module ArrayEnum
           db_values = Array(values).map do |value|
             mapping_hash[value] || raise(ArgumentError, format(MISSING_VALUE_MESSAGE, value: value, attr: attr_name))
           end
-          where("#{table_name}.#{attr_name} #{comparison_operator} ARRAY[:db_values]", db_values: db_values)
+          where("#{table_name}.#{attr_name} #{comparison_operator} ARRAY[:db_values]::integer[]", db_values: db_values)
         end
       end
 
